@@ -38,7 +38,7 @@ class Decoder(object):
                     },
                     "time": timestamp,
                     "fields": {  # quantiles
-                        metric: value
+                        metric: float(value)
                         for metric, value in host_data["metrics"].iteritems()
                     },
                 }]
