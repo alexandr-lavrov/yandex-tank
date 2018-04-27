@@ -93,6 +93,35 @@ class Decoder(object):
                     str(code): int(cnt)
                     for code, cnt in data["overall"]["proto_code"]["count"].items()
                 },
+            }, {
+                "measurement": "time_intervals",
+                "tags": {
+                    "tank": self.tank_tag,
+                    "uuid": self.uuid,
+                },
+                "time": timestamp,
+                "fields": {
+                    'q' + str(point['to']): point['count']
+                    for point in self.convert_hist(
+                        data["overall"]["interval_real"]["hist"]
+                    )
+                },
             },
         ]
         return points
+
+    def convert_hist(self, hist, sep=None):
+        points = sep or (0, 1, 10, 100, 1000, 10000)
+
+        data = hist['data']
+        bins = hist['bins']
+        return [
+            {
+                'from': left,
+                'to': right,
+                'count': sum(
+                    d for b, d in zip(bins, data)
+                    if left <= b / 1000 < right
+                )
+            } for left, right in zip(points[:-1], points[1:])
+        ]
