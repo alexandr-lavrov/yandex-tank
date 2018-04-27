@@ -50,7 +50,7 @@ class Plugin(AbstractPlugin, AggregateResultListener,
         uuid = str(uuid4())
         logger.info(
             "Grafana link: {grafana_root}"
-            "dashboard/db/{grafana_dashboard}?var-uuid={uuid}&from=-5m&to=now".format(
+            "dashboard/db/{grafana_dashboard}?var-uuid={uuid}&from=now-5m&to=now".format(
                 grafana_root=grafana_root,
                 grafana_dashboard=grafana_dashboard,
                 uuid=uuid,
